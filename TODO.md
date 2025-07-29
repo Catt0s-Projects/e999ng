@@ -6,14 +6,15 @@ Import tags, aliases, implications, etc. from e621 on an ongoing basis, includin
   - `https://e621.net/db_export/` -> files for db exports, `.csv.gz`
     - https://github.com/mm12/cat621/blob/tagging-import/db/populate.rb#L154
     - https://github.com/mm12/cat621/blob/tagging-import/db/populate.rb#L105
-- Turn off "fix tag counts"
-- import AIBURs as-is. No need to process them.
-## Add e6 upload button
+- disable "fix tag counts" button. We want the db's tag count for e621 tags to be wrong.
+- import AIBURs as-is. No need to process them - just use the current status and add them into the database. 
+## Add e621 upload button
 Add a button to upload a post to e621.
 - Post field for direct URLs?
 - Add buttons for copying description(s), in case it goes over the limit
-  - description: replace brackets with unicode?
-  - same for tags?
+  - description: replace brackets with unicode to prevent dtext formatting issues (eg, `[section=abc[]]` would replace the inner brackets)
+  - same for tags? Add a copy button. 
+  - both of these will need to also look at the child posts to correctly format it
 - Parent/Child items:
   - get sources and tags from them
   - earliest creation date => year tag
@@ -23,7 +24,7 @@ check e621's iqdb for matches
   - Probably an object type
   - match item and match relation
 - rate limiting
-- md5 match: copy e6 tags and sources. Ensure e6 sources are up-to-date.
+- md5 match: copy e621 tags and sources. Ensure e621 sources are up-to-date.
 - Add metatags for searching these: 
   - File 
     - Type: better/same/unknown/(actual type) 
@@ -45,30 +46,35 @@ Add tooling:
 - Pools: automatically scrape & pool items: 
   - items on the same post (ie, Pixiv, Twitter, etc.)
   - items linked from a post (for prev/next links)
-- Parent: Parent/Child repurposed to be for "related" posts (iqdb matches)
+- Parent: Parent/Child repurposed from e621 usage to be for "related" posts (iqdb matches). All posts with a strong match are added as a child. 
   - Attempts to automatically determine "best" version, using res and compression estimate (no file type to avoid fake PNG throwing it off) 
 - Rating: add a "none" rating. Does not need to be selectable in UI, as it is only used on initial upload.
 - Scraper MD5 matches: Merge tags, sources, descriptions. 
   - Setting dates: Oldest post is the upload date. Each match adds changes as it's timestamp.
 - Images: Store and present as AVIF? Discuss whether we even need to back up the original files
   - If a source no longer has the image, then wouldn't it be preferable to have a losslessly resaved JPG?
-  - Unfortanately, e6 doesn't currently support AVIF, so it will need to be converted back for now...
+  - Unfortunately, e621 doesn't currently support AVIF, so it will need to be converted back for now...
 - Add queue status page
+  - Internal IQDB status
+  - e621 IQDB status
+  - Scraper status
 - Sources: also add the artist URL scraped from.
-- Site Tags: implimented in parallel with normal tags, but use their own DB index (?)
-  - **alt idea**: use a new tag cateogry, and exclude them from upload? Might work better...
+- Site Tags: implemented in parallel with normal tags, but use their own DB index (?)
+  - **alt idea**: use a new tag category, and exclude them from upload? Might work better...
     - for project meta-tags (art, comms) prefix with `SPECIAL_`?
   - format as `{SITE_NAME}_{tag}`? may need adjustments to work.. 
-    - tags attatched to posts but are not editable 
+    - tags attached to posts but are not editable 
     - searchable like normal tags
   - maybes:
-    - allow wiki for site tags (e6 tags link to e621 wiki directly)
-    - allow AIBUR for site tags (needs to be seperate?)
+    - allow wiki for site tags (e621 tags link to e621 wiki directly)
+    - allow AIBURs for site tags (needs to be separate?)
 - Set helpers - use sets to track: 
   - who added a url being scraped
   - user hides
 - Fav helper: Use favorites as queue.
-- Artist Pages: Implement artist pages as part of site tags
+- Artist Pages: Implement artist pages as part of site tags instead of normal tags
+  - URLs & names are already part of them, so can be added automatically. 
+  - Cross-reference who added URLs in the changelog to add to a set of URLs added by that user
   - if the page starts with `-`, try using archive sites? 
     - furarchiver, etc. 
   - give commissioners artist pages too the same way
@@ -82,7 +88,7 @@ Add tooling to import data from reverser
   - deletions, etc => site tags
   - queue, hides => post sets 
   - artist listings => artist pages / site tags
-  - iqdb matches to e6 => add post data for each
+  - iqdb matches to e621 => add post data for each
     - get post data from the db export instead of the api?
 ## Limit changes
 Needs to change for proper functioning: 
@@ -91,6 +97,6 @@ Needs to change for proper functioning:
   - on the initial db setup, for e621 tags
 - rate limits
   - up the rate limit for sets, favs, changes, etc. 
-  - RELATED: figure out a way to let users mass-edit posts more easily (site tags or e6 tags to many)
+  - RELATED: figure out a way to let users mass-edit posts more easily (site tags or e621 tags to many)
 - size limits
   - up the limit on sets and fav sizes
