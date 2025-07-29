@@ -32,7 +32,13 @@ check e621's iqdb for matches
   - Match: MD5/'none'/(actual percentage match)
   - e621 status: active/deleted/(replaced?)
 ## Scraper tooling
-Ensure third-party scraper can import items. Add tooling: 
+Ensure third-party scraper can import items. 
+- Try to get imgbrd-grabber working
+  - works with danbooru, but may need modding to work with e621ng
+- Try adding other importers for things unsupported by it
+  - eg, furarchiver archives, mega and proton folders
+  - Ask Tarrgon for Discord scraper integration help
+Add tooling: 
 - Pools: automatically scrape & pool items: 
   - items on the same post (ie, Pixiv, Twitter, etc.)
   - items linked from a post (for prev/next links)
