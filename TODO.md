@@ -1,9 +1,11 @@
 # Development TODO list
 Turn e621ng into a successor to Tarrgon's Reverser (which itself is one to Earlopain's)
-copied and expanded from [github project](https://github.com/orgs/Catt0s-Projects/projects/1/views/2)
 ## Tag Importer
 Import tags, aliases, implications, etc. from e621 on an ongoing basis, including the counts from e6.
 - At 1AM UTC daily, get the new DB export and run a job to update everything
+  - `https://e621.net/db_export/` -> files for db exports, `.csv.gz`
+    - https://github.com/mm12/cat621/blob/tagging-import/db/populate.rb#L154
+    - https://github.com/mm12/cat621/blob/tagging-import/db/populate.rb#L105
 - Turn off "fix tag counts"
 - import AIBURs as-is. No need to process them.
 ## Add e6 upload button
@@ -11,6 +13,7 @@ Add a button to upload a post to e621.
 - Post field for direct URLs?
 - Add buttons for copying description(s), in case it goes over the limit
   - description: replace brackets with unicode?
+  - same for tags?
 - Parent/Child items:
   - get sources and tags from them
   - earliest creation date => year tag
