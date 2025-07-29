@@ -25,7 +25,7 @@ check e621's iqdb for matches
   - match item and match relation
 - rate limiting
 - md5 match: copy e621 tags and sources. Ensure e621 sources are up-to-date.
-- Add metatags for searching these: 
+### Add metatags for searching these: 
   - File 
     - Type: better/same/unknown/(actual type) 
       - unknown being formats that support both lossless and lossy
@@ -36,13 +36,13 @@ check e621's iqdb for matches
   - Match: MD5/'none'/(actual percentage match)
   - e621 status: active/deleted/(replaced?)
 ## Scraper tooling
-Ensure third-party scraper can import items. 
+### Ensure third-party scraper can import items. 
 - Try to get imgbrd-grabber working
   - works with danbooru, but may need modding to work with e621ng
 - Try adding other importers for things unsupported by it
   - eg, furarchiver archives, mega and proton folders
   - Ask Tarrgon for Discord scraper integration help
-Add tooling: 
+### Add tooling: 
 - Pools: automatically scrape & pool items: 
   - items on the same post (ie, Pixiv, Twitter, etc.)
   - items linked from a post (for prev/next links)
@@ -52,14 +52,19 @@ Add tooling:
 - Scraper MD5 matches: Merge tags, sources, descriptions. 
   - Setting dates: Oldest post is the upload date. Each match adds changes as it's timestamp.
 - Images: Store and present as AVIF? Discuss whether we even need to back up the original files
-  - If a source no longer has the image, then wouldn't it be preferable to have a losslessly resaved JPG?
-  - Unfortunately, e621 doesn't currently support AVIF, so it will need to be converted back for now...
+  - ie, convert all the images to AVIF. Smaller file size, lossless, and very flexible. But there are drawbacks...
+  - Unfortunately, e621ng doesn't currently support AVIF. This will need to be added.
+  - If an image's original file url from source no longer exists, then the AVIF will be the only option. 
+    - This means we will need to convert it to another format, essentially "re-saving", which we are usually against. 
+    - Is this an acceptable tradeoff for the circumstances?
 - Add queue status page
-  - Internal IQDB status
-  - e621 IQDB status
-  - Scraper status
+  - Internal IQDB status - how many items are queued to add/update/check iqdb for
+  - e621 IQDB status - how many items are queued to check e621's iqdb for matches there are
+  - Scraper status - what URLs the scraper is busy with 
 - Sources: also add the artist URL scraped from.
-- Site Tags: implemented in parallel with normal tags, but use their own DB index (?)
+- Fav helper: Use favorites as a user's "todo" queue
+### Site Tags: 
+implemented in parallel with normal tags, but use their own DB index (?)
   - **alt idea**: use a new tag category, and exclude them from upload? Might work better...
     - for project meta-tags (art, comms) prefix with `SPECIAL_`?
   - format as `{SITE_NAME}_{tag}`? may need adjustments to work.. 
@@ -71,9 +76,9 @@ Add tooling:
 - Set helpers - use sets to track: 
   - who added a url being scraped
   - user hides
-- Fav helper: Use favorites as queue.
-- Artist Pages: Implement artist pages as part of site tags instead of normal tags
+### Artist Pages: Implement artist pages as part of site tags instead of normal tags
   - URLs & names are already part of them, so can be added automatically. 
+    - add a property for scrape info? (status, percentages, last scraped)
   - Cross-reference who added URLs in the changelog to add to a set of URLs added by that user
   - if the page starts with `-`, try using archive sites? 
     - furarchiver, etc. 
