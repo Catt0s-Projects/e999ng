@@ -105,3 +105,9 @@ Needs to change for proper functioning:
   - RELATED: figure out a way to let users mass-edit posts more easily (site tags or e621 tags to many)
 - size limits
   - up the limit on sets and fav sizes
+## StorageManager
+Add support for different storage buckets
+- Add a model for an enumerated LUT of base urls
+  - ie, will be stored as `integer` (key), `url`
+- Anything that stores files should reference one of these integers
+- The storage manager uses the LUT to make the URL, instead of a static base
