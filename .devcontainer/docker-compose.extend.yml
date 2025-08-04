@@ -4,7 +4,7 @@ services:
   # Dev Container extension doesn't support `depends_on: !reset []`
   # https://github.com/microsoft/vscode-remote-release/issues/8734
   dev-container:
-    image: e621
+    image: e999
     user: ${DOCKER_USER:-root}
     environment:
       RAILS_ENV: development
@@ -16,7 +16,7 @@ services:
       - node_modules:/app/node_modules
 
   # Don't start any other services
-  e621:
+  e999:
     profiles:
       - dev-container
   autocompleted:

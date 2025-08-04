@@ -16,10 +16,12 @@ RUN corepack enable && corepack prepare --activate && yarn install
 
 FROM ruby:3.3.1-alpine3.20
 
-RUN apk --no-cache add ffmpeg vips \
+RUN apk --no-cache add ffmpeg vips vips-tools \
   postgresql15-client \
   git jemalloc tzdata \
-  sudo gcompat
+  sudo gcompat \
+  libheif libheif-dev \
+  libjxl libjxl-dev
 
 WORKDIR /app
 

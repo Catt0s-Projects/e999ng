@@ -53,55 +53,50 @@ module Danbooru
       ]
     end
 
-    def flag_reasons
-      [
+    def max_image_height
+      100_000
+    end
+    
+    def max_image_width
+      100_000
+    end
 
-      ]
-  end
+    def max_image_resolution
+      10_000_000
+    end
 
-  def max_image_height
-    100_000
-  end
-  
-  def max_image_width
-    100_000
-  end
+    def max_video_duration
+      3600
+    end
 
-  def max_image_resolution
-    10_000_000
-  end
+    def max_file_size
+      100.megabytes
+    end
 
-  def max_video_duration
-    3600
-  end
+    def max_file_sizes
+      {
+        "jpg" => 100.megabytes,
+        "png" => 100.megabytes,
+        "gif" => 20.megabytes,
+        "webm" => 100.megabytes,
+        "mp4" => 100.megabytes,
+      }
+    end
 
-  def max_file_size
-    100.megabytes
-  end
+    def set_post_limit(_user) # rubocop:disable Naming/AccessorMethodName
+      200_000
+    end
 
-  def max_file_sizes
-    {
-      "jpg" => 100.megabytes,
-      "png" => 100.megabytes,
-      "gif" => 20.megabytes,
-      "webm" => 100.megabytes,
-      "mp4" => 100.megabytes,
-    }
-  end
+    def pool_post_limit(_user)
+      10_000
+    end
 
-  def set_post_limit(_user) # rubocop:disable Naming/AccessorMethodName
-    200_000
-  end
+    def hourly_upload_limit
+      60
+    end
 
-  def pool_post_limit(_user)
-    10_000
+    # def post_page_limit
+    #   300
+    # end
   end
-
-  def hourly_upload_limit
-    60
-  end
-
-  # def post_page_limit
-  #   300
-  # end
 end
