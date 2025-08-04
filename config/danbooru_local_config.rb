@@ -95,6 +95,16 @@ module Danbooru
       60
     end
 
+        # The method to use for storing image files.
+    def storage_manager
+      # Store files on the local filesystem.
+      # base_dir - where to store files (default: under public/data)
+      # base_url - where to serve files from (default: http://#{hostname}/data)
+      # hierarchical: false - store files in a single directory
+      # hierarchical: true - store files in a hierarchical directory structure, based on the MD5 hash
+      StorageManager::Local.new(base_url: Rails.application.routes.url_helpers.root_url, base_dir: Rails.public_path.join("data").to_s, hierarchical: true)
+    end
+
     # def post_page_limit
     #   300
     # end

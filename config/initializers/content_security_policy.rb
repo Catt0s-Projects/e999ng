@@ -8,16 +8,17 @@
 
 Rails.application.configure do
   config.content_security_policy do |policy|
-    policy.default_src :self
-    policy.script_src  :self, "ads.dragonfru.it", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/", "https://www.recaptcha.net/", "https://assets.freespeechcoalition.com"
-    policy.style_src   :self, :unsafe_inline
-    policy.connect_src :self, "ads.dragonfru.it", "plausible.dragonfru.it", "static1.e621.net", "static1.e926.net", "api.freespeechcoalition.com"
-    policy.object_src  :self, "static1.e621.net", "static1.e926.net"
-    policy.media_src   :self, "static1.e621.net", "static1.e926.net"
+    hosts = config.hosts.map { |h| h.is_a?(Regexp) ? nil : "#{h}" }.compact
+    policy.default_src :self, *hosts
+    policy.script_src  :self, *hosts, "ads.dragonfru.it", "https://www.google.com/recaptcha/", "https://www.gstatic.com/recaptcha/", "https://www.recaptcha.net/", "https://assets.freespeechcoalition.com"
+    policy.style_src   :self, *hosts, :unsafe_inline
+    policy.connect_src :self, *hosts, "ads.dragonfru.it", "plausible.dragonfru.it", "static1.e621.net", "static1.e926.net", "api.freespeechcoalition.com"
+    policy.object_src  :self, *hosts, "static1.e621.net", "static1.e926.net"
+    policy.media_src   :self, *hosts, "static1.e621.net", "static1.e926.net"
     policy.frame_ancestors :none
     policy.frame_src   'https://www.google.com/recaptcha/', 'https://www.recaptcha.net/'
-    policy.font_src    :self
-    policy.img_src     :self, :data, 'static1.e621.net', 'static1.e926.net', 'ads.dragonfru.it'
+    policy.font_src    :self, *hosts
+    policy.img_src     :self,  *hosts, :data, 'static1.e621.net', 'static1.e926.net', 'ads.dragonfru.it'
     policy.child_src   :none
     policy.form_action :self, 'discord.e621.net', 'discord.com'
     # Specify URI for violation reports

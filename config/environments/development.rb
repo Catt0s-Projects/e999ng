@@ -70,4 +70,5 @@ Rails.application.configure do
   config.hosts << 'e999ng.local:8080'
   config.hosts << 'e999ng'
   config.hosts << 'e999ng:8080'
+  config.hosts << 'localhost:8080'
 end
