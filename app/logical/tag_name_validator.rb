@@ -3,6 +3,8 @@
 class TagNameValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     normalized = Tag.normalize_name(value)
+    return unless Danbooru.config.enforce_tag_format? # setup tool
+
     case normalized
     when /\A_*\z/
       record.errors.add(attribute,  "'#{value}' cannot be blank")

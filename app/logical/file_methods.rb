@@ -2,7 +2,7 @@
 
 module FileMethods
   def is_image?
-    is_png? || is_jpg? || is_gif?
+    is_png? || is_jpg? || is_gif? || is_jxl? || is_avif? || is_webp?
   end
 
   def is_png?
@@ -29,19 +29,44 @@ module FileMethods
     file_ext == "mp4"
   end
 
+  def is_avif?
+    file_ext == "avif"
+  end
+
+  def is_jxl?
+    file_ext == "jxl"
+  end
+
+  def is_webp?
+    file_ext == "webp"
+  end
+
   def is_video?
     is_webm? || is_mp4?
   end
 
-  def is_animated_png?(file_path)
-    is_png? && ApngInspector.new(file_path).inspect!.animated?
-  end
+  def is_animated_image?(file_path) # e999ng:TODO: test
+    case file_ext
+    when "avif", "jxl", "webp"
+      # Try to load the second frame/page. If it exists, it's animated.
+      begin
+        result = Vips::Image.new_from_file(file_path, page: 1)
+      rescue Vips::Error => e
+        result = e
+      end
+    when "png"
+      return ApngInspector.new(file_path).inspect!.animated?
+    when "gif"
+      # Check whether the gif has multiple frames by trying to load the second frame.
+      begin
+        result = Vips::Image.gifload(file_path, page: 1)
+      rescue Vips::Error => e
+        result = e
+      end
+    else
+      return false
+    end
 
-  def is_animated_gif?(file_path)
-    return false unless is_gif?
-
-    # Check whether the gif has multiple frames by trying to load the second frame.
-    result = Vips::Image.gifload(file_path, page: 1) rescue $ERROR_INFO
     if result.is_a?(Vips::Image)
       true
     elsif result.is_a?(Vips::Error) && result.message =~ /bad page number/
@@ -85,6 +110,12 @@ module FileMethods
         "webm"
       when "video/mp4"
         "mp4"
+      when "image/jxl"
+        "jxl"
+      when "image/avif"
+        "avif"
+      when "image/webp"
+        "webp"
       else
         mime_type
       end

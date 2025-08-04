@@ -44,8 +44,8 @@ class FileValidator
     if record.file_size > max_size
       record.errors.add(:file_size, "is too large. Maximum allowed for this file type is #{ApplicationController.helpers.number_to_human_size(max_size)}")
     end
-    if record.is_animated_png?(file_path) && record.file_size > Danbooru.config.max_apng_file_size
-      record.errors.add(:file_size, "is too large. Maximum allowed for this file type is #{ApplicationController.helpers.number_to_human_size(Danbooru.config.max_apng_file_size)}")
+    if record.is_animated_image?(file_path) && record.file_size > Danbooru.config.max_animated_file_size
+      record.errors.add(:file_size, "is too large. Maximum allowed for this file type is #{ApplicationController.helpers.number_to_human_size(Danbooru.config.max_animated_file_size)}")
     end
   end
 

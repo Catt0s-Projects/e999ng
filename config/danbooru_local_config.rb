@@ -77,6 +77,7 @@ module Danbooru
       super.merge({
         "avif" => 100.megabytes,
         "jxl" =>  100.megabytes,
+        "webp" =>  100.megabytes,
       })
     end
 
@@ -92,7 +93,11 @@ module Danbooru
       60
     end
 
-        # The method to use for storing image files.
+    def enforce_acsii_tags?
+      false
+    end
+
+    # The method to use for storing image files.
     def storage_manager
       # Store files on the local filesystem.
       # base_dir - where to store files (default: under public/data)

@@ -87,7 +87,7 @@ class PostReplacementTest < ActiveSupport::TestCase
     end
 
     should "not allow an apng that is too large" do
-      Danbooru.config.stubs(:max_apng_file_size).returns(0)
+      Danbooru.config.stubs(:max_animated_file_size).returns(0)
       @replacement = @post.replacements.create(attributes_for(:apng_replacement).merge(creator: @user))
       assert_match(/File size is too large/, @replacement.errors.full_messages.join)
     end

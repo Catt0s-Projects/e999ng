@@ -375,7 +375,7 @@ module Danbooru
       }
     end
 
-    def max_apng_file_size
+    def max_animated_file_size
       20.megabytes
     end
 
@@ -726,6 +726,10 @@ module Danbooru
 
     def aibur_stats_discord_webhook_url
       nil
+    end
+
+    def enforce_tag_format?
+      true
     end
   end
 
