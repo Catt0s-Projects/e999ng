@@ -23,6 +23,7 @@ class TagCategory
     "meta" => 7,
     "lore" => 8,
     "lor" => 8,
+    "site" => 9,
   }.freeze
 
   CANONICAL_MAPPING = {
@@ -35,6 +36,7 @@ class TagCategory
     "Invalid" => 6,
     "Meta" => 7,
     "Lore" => 8,
+    "Site" => 9,
   }.freeze
 
   REVERSE_MAPPING = {
@@ -47,6 +49,7 @@ class TagCategory
     6 => "invalid",
     7 => "meta",
     8 => "lore",
+    9 => "site",
   }.freeze
 
   SHORT_NAME_MAPPING = {
@@ -71,18 +74,20 @@ class TagCategory
     "invalid" => "Invalid",
     "meta" => "Meta",
     "lore" => "Lore",
+    "site" => "Site",
   }.freeze
 
   ADMIN_ONLY_MAPPING = {
-    "general" => false,
+    "general" => true,
     "artist" => false,
     "contributor" => false,
     "copyright" => false,
     "character" => false,
-    "species" => false,
+    "species" => true,
     "invalid" => true,
     "meta" => true,
     "lore" => true,
+    "site" => true,
   }.freeze
 
   HUMANIZED_MAPPING = {
@@ -92,12 +97,6 @@ class TagCategory
       "regexmap" => //,
       "formatstr" => "created by %s",
     },
-    "copyright" => {
-      "slice" => 1,
-      "exclusion" => [],
-      "regexmap" => //,
-      "formatstr" => "(%s)",
-    },
     "character" => {
       "slice" => 5,
       "exclusion" => [],
@@ -106,13 +105,13 @@ class TagCategory
     },
   }.freeze
 
-  CATEGORIES = %w[general species character copyright artist contributor invalid lore meta].freeze
+  CATEGORIES = %w[general species character copyright artist contributor invalid lore meta site].freeze
   CATEGORY_IDS = CANONICAL_MAPPING.values.freeze
 
   SHORT_NAME_LIST = SHORT_NAME_MAPPING.keys.freeze
-  HUMANIZED_LIST = %w[character copyright artist].freeze
-  SPLIT_HEADER_LIST = %w[invalid artist contributor copyright character species general meta lore].freeze
-  CATEGORIZED_LIST = %w[invalid artist contributor copyright character species meta general lore].freeze
+  HUMANIZED_LIST = %w[character artist].freeze
+  SPLIT_HEADER_LIST = %w[invalid artist contributor copyright character species general meta lore site].freeze
+  CATEGORIZED_LIST = %w[invalid artist contributor copyright character species meta general lore site].freeze
 
   SHORT_NAME_REGEX = SHORT_NAME_LIST.join("|").freeze
   ALL_NAMES_REGEX = MAPPING.keys.join("|").freeze

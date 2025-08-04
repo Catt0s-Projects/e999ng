@@ -74,13 +74,10 @@ module Danbooru
     end
 
     def max_file_sizes
-      {
-        "jpg" => 100.megabytes,
-        "png" => 100.megabytes,
-        "gif" => 20.megabytes,
-        "webm" => 100.megabytes,
-        "mp4" => 100.megabytes,
-      }
+      super.merge({
+        "avif" => 100.megabytes,
+        "jxl" =>  100.megabytes,
+      })
     end
 
     def set_post_limit(_user) # rubocop:disable Naming/AccessorMethodName

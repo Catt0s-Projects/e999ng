@@ -14,6 +14,7 @@ Add a button to upload a post to e621.
 - Add buttons for copying description(s), in case it goes over the limit
   - description: replace brackets with unicode to prevent dtext formatting issues (eg, `[section=abc[]]` would replace the inner brackets)
   - same for tags? Add a copy button. 
+    - minimimized? (ie, remove implied tags)
   - both of these will need to also look at the child posts to correctly format it
 - Parent/Child items:
   - get sources and tags from them

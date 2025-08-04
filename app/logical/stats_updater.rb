@@ -30,12 +30,16 @@ class StatsUpdater
     stats[:safe_posts] = Post.tag_match("rating:s", always_show_deleted: true).count_only
     stats[:questionable_posts] = Post.tag_match("rating:q", always_show_deleted: true).count_only
     stats[:explicit_posts] = Post.tag_match("rating:e", always_show_deleted: true).count_only
-    stats[:jpg_posts] = Post.tag_match("type:jpg", always_show_deleted: true).count_only
-    stats[:png_posts] = Post.tag_match("type:png", always_show_deleted: true).count_only
-    stats[:gif_posts] = Post.tag_match("type:gif", always_show_deleted: true).count_only
-    stats[:swf_posts] = Post.tag_match("type:swf", always_show_deleted: true).count_only
-    stats[:webm_posts] = Post.tag_match("type:webm", always_show_deleted: true).count_only
-    stats[:mp4_posts] = Post.tag_match("type:mp4", always_show_deleted: true).count_only
+    # Dynamically count posts by file type based on config
+    Danbooru.config.max_file_sizes.keys.each do |ext|
+      stats[:"#{ext}_posts"] = Post.tag_match("type:#{ext}", always_show_deleted: true).count_only
+    end
+    # stats[:jpg_posts] = Post.tag_match("type:jpg", always_show_deleted: true).count_only
+    # stats[:png_posts] = Post.tag_match("type:png", always_show_deleted: true).count_only
+    # stats[:gif_posts] = Post.tag_match("type:gif", always_show_deleted: true).count_only
+    # stats[:swf_posts] = Post.tag_match("type:swf", always_show_deleted: true).count_only
+    # stats[:webm_posts] = Post.tag_match("type:webm", always_show_deleted: true).count_only
+    # stats[:mp4_posts] = Post.tag_match("type:mp4", always_show_deleted: true).count_only
     stats[:average_file_size] = Post.average("file_size")
     stats[:total_file_size] = Post.sum("file_size")
     stats[:average_posts_per_day] = daily_average.call(stats[:total_posts])
