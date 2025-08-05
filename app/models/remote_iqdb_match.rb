@@ -33,29 +33,30 @@ class RemoteIqdbMatch < ApplicationRecord
       # e999_todo report this for later
     end
 
+    # move to a model for general image flags
 
     # gets the image information by shelling out for ImageMagick
     # estimate compression based on file size, width, height, and bit depth
     # check if the file has an alpha channel or color profile
     # check if the file has multiple frames
 
-    begin
-      magick_info = Magick::Image.ping(file.path).first
-      {
-        width: magick_info.columns,
-        height: magick_info.rows,
-        bit_depth: magick_info.depth,
-        has_alpha_channel: magick_info.alpha?,
-        has_color_profile: magick_info.color_profile?,
-        compression: magick_info.compression,
-        frames: magick_info.frames
-      }
-    rescue Magick::ImageMagickError => e
-      Rails.logger.error("Failed to get image info for #{file.path}: #{e.message}")
-      nil
-    ensure
-      file.close if file
-    end
+    # begin
+    #   magick_info = Magick::Image.ping(file.path).first
+    #   {
+    #     width: magick_info.columns,
+    #     height: magick_info.rows,
+    #     bit_depth: magick_info.depth,
+    #     has_alpha_channel: magick_info.alpha?,
+    #     has_color_profile: magick_info.color_profile?,
+    #     compression: magick_info.compression,
+    #     frames: magick_info.frames
+    #   }
+    # rescue Magick::ImageMagickError => e
+    #   Rails.logger.error("Failed to get image info for #{file.path}: #{e.message}")
+    #   nil
+    # ensure
+    #   file.close if file
+    # end
   end
 
 

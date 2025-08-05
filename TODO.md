@@ -124,3 +124,20 @@ Add support for different storage buckets
   - ie, will be stored as `integer` (key), `url`
 - Anything that stores files should reference one of these integers
 - The storage manager uses the LUT to make the URL, instead of a static base
+
+# Scratchpad
+## Base Image Index
+add a base file data holder:
+ - type (enum) { jpg: 0, png: 1, gif: 2, webp: 3, mp4: 4, webm: 5, jxl: 6, avif: 7 }
+ - flags alpha_channel, color_profile, multi_frame
+ - bit_depth
+ - width
+ - height
+ - md5
+ - size
+ - compression_estimate
+Applies to: 
+ - RemoteIqdbMatch
+ - Post
+ - Replacement
+ - Mascot
