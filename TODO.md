@@ -21,9 +21,20 @@ Add a button to upload a post to e621.
   - earliest creation date => year tag
 ## e621 iqdb
 check e621's iqdb for matches
-- add a linkage on posts. 
+### object
+- add a linkage on posts. (post has_many)
   - Probably an object type
   - match item and match relation
+  - attributes:
+    - e621 File Size
+    - e621 File Type
+    - e621 Resolution
+    - e621 Estimated compression (FFMPEG?)
+    - e621 match percent (percent or exact)
+    - e621 status (enumerated, `active`, `deleted`, `other`)
+    - e621 post ID
+    - e621 md5
+### Job: 
 - rate limiting
 - md5 match: copy e621 tags and sources. Ensure e621 sources are up-to-date.
 ### Add metatags for searching these: 
