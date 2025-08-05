@@ -47,6 +47,7 @@ check e621's iqdb for matches
     - Compression estimate: more/less/same/(actual number)
   - Match: MD5/'none'/(actual percentage match)
   - e621 status: active/deleted/(replaced?)
+  - original file type, size?
 ## Scraper tooling
 ### Ensure third-party scraper can import items. 
 - Try to get imgbrd-grabber working
