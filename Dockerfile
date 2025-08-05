@@ -21,7 +21,8 @@ RUN apk --no-cache add ffmpeg vips vips-tools \
   git jemalloc tzdata \
   sudo gcompat \
   libheif libheif-dev \
-  libjxl libjxl-dev
+  libjxl libjxl-dev \
+  imagemagick imagemagick-dev
 
 WORKDIR /app
 

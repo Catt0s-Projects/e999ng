@@ -11,6 +11,9 @@ class CreateRemoteIqdbMatches < ActiveRecord::Migration[7.1]
       t.integer :remote_id
       t.integer :remote_status
       t.string :remote_md5
+      t.integer :remote_source
+      t.integer :bit_depth, limit: 1
+      t.integer :flags, limit: 1
 
       t.timestamps
     end
