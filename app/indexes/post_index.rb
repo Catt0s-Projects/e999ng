@@ -74,6 +74,16 @@ module PostIndex
           has_children: { type: "boolean" },
           has_pending_replacements: { type: "boolean" },
           artverified: { type: "boolean" },
+
+          # Base File Data
+          file_type:            { type: "keyword" },
+          bit_depth:            { type: "integer" },
+          md5:                  { type: "keyword" },
+          compression_estimate: { type: "float" },
+          num_channels:         { type: "integer" },
+          has_multiple_frames:  { type: "boolean" },
+          has_color_profile:    { type: "boolean" },
+          has_alpha_channel:    { type: "boolean" },
         },
       },
     }
@@ -223,6 +233,13 @@ module PostIndex
 
   def as_indexed_json(options = {})
     {
+      # base file data
+      md5:         base_file_data&.md5,
+      file_ext:    base_file_data&.file_type,
+      width:       base_file_data&.image_width,
+      height:      base_file_data&.image_height,
+      file_size:   base_file_data&.file_size,
+
       created_at:        created_at,
       updated_at:        updated_at,
       commented_at:      last_commented_at,
@@ -247,7 +264,6 @@ module PostIndex
       tag_count_lore:        tag_count_lore,
 
       comment_count: options[:comment_count] || comment_count,
-      file_size:     file_size,
       parent:        parent_id,
       pools:         options[:pools]      || ::Pool.where("? = ANY(post_ids)", id).pluck(:id),
       sets:          options[:sets]       || ::PostSet.where("? = ANY(post_ids)", id).pluck(:id),
@@ -262,16 +278,11 @@ module PostIndex
       approver:      approver_id,
       deleter:       options[:deleter]    || ::PostFlag.where(post_id: id, is_resolved: false, is_deletion: true).order(id: :desc).first&.creator_id,
       del_reason:    options[:del_reason] || ::PostFlag.where(post_id: id, is_resolved: false, is_deletion: true).order(id: :desc).first&.reason&.downcase,
-      width:         image_width,
-      height:        image_height,
       mpixels:       image_width && image_height ? (image_width.to_f * image_height / 1_000_000).round(2) : 0.0,
       aspect_ratio:  image_width && image_height ? (image_width.to_f / [image_height, 1].max).round(2) : 1.0,
       duration:      duration,
 
       tags:        tag_string.split(" "),
-      md5:         md5,
-      rating:      rating,
-      file_ext:    file_ext,
       source:      source_array,
       description: description.present? ? description : nil,
 

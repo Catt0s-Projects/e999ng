@@ -136,8 +136,7 @@ add a base file data holder:
  - md5
  - size
  - compression_estimate
-Applies to: 
+Applies to (these should `belongs_to` the base file)
  - RemoteIqdbMatch
  - Post
  - Replacement
- - Mascot

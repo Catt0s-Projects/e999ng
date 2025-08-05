@@ -3,6 +3,7 @@
 class PostReplacement < ApplicationRecord
   self.table_name = "post_replacements2"
   belongs_to :post
+  belongs_to :base_file_data, class_name: "BaseFileData"
   belongs_to :creator, class_name: "User"
   belongs_to :approver, class_name: "User", optional: true
   belongs_to :uploader_on_approve, class_name: "User", foreign_key: :uploader_id_on_approve, optional: true

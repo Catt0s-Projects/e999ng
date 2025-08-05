@@ -44,6 +44,7 @@ class Post < ApplicationRecord
   after_commit :generate_video_samples, on: :create, if: :is_video?
 
   belongs_to :updater, :class_name => "User", optional: true # this is handled in versions
+  belongs_to :base_file_data, class_name: "BaseFileData"
   belongs_to :approver, class_name: "User", optional: true
   belongs_to :uploader, :class_name => "User"
   user_status_counter :post_count, foreign_key: :uploader_id
