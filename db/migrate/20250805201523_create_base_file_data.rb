@@ -9,6 +9,7 @@ class CreateBaseFileData < ActiveRecord::Migration[7.1]
       t.string :md5
       t.integer :flags
       t.float :compression
+      t.string  :file_name
 
       t.timestamps
     end

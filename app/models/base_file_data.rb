@@ -1,17 +1,20 @@
 class BaseFileData < ApplicationRecord
   enum file_type: { jpg: 0, png: 1, gif: 2, webp: 3, mp4: 4, webm: 5, jxl: 6, avif: 7 }
-
+  # attr_accessor
+      # t.integer :file_type
+      # t.integer :file_size
+      # t.integer :width
+      # t.integer :depth
+      # t.integer :height
+      # t.string :md5
+      # t.integer :flags
+      # t.float :compression
   # Bitflags for file properties
   HAS_ALPHA_CHANNEL   = 0b00000001
   HAS_COLOR_PROFILE   = 0b00000010
   HAS_MULTIPLE_FRAMES = 0b00000100
   NUM_CHANNELS        = 0b00011000 # number of channels (1-indexed, 1-4)
   RESERVED_FLAGS      = 0b11100000
-
-  # Add these attributes to your migrations:
-  # :file_type (integer), :flags (integer), :bit_depth (integer),
-  # :width (integer), :height (integer), :md5 (string),
-  # :size (integer), :compression_estimate (float)
 
   def has_alpha_channel?
     (flags.to_i & HAS_ALPHA_CHANNEL) != 0
@@ -27,6 +30,18 @@ class BaseFileData < ApplicationRecord
 
   def num_channels
     ((flags.to_i & NUM_CHANNELS) >> 3) + 1
+  end
+
+  def file_ext
+    return file_type.to_s
+  end
+
+  def image_width
+    width || 0
+  end
+
+  def image_height
+    height || 0
   end
 
   def calculate_compression_ratio

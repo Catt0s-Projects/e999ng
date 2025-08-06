@@ -20,8 +20,8 @@ class Post < ApplicationRecord
   before_validation :blank_out_nonexistent_parents
   before_validation :remove_parent_loops
   normalizes :description, with: ->(desc) { desc.gsub("\r\n", "\n") }
-  validates :md5, uniqueness: { :on => :create, message: ->(obj, data) {"duplicate: #{Post.find_by_md5(obj.md5).id}"} }
-  validates :rating, inclusion: { in: %w(s q e), message: "rating must be s, q, or e" }
+  validates :md5, uniqueness: { :on => :create, message: ->(obj, data) {"duplicate: #{Post.find_by_md5(obj.md5).id}"} }  # e999_todo (base type)
+  validates :rating, inclusion: { in: %w(s q e), message: "rating must be s, q, or e" } # e999_todo (none on initialize?)
   validates :bg_color, format: { with: /\A[A-Fa-f0-9]{6}\z/ }, allow_nil: true
   validates :description, length: { maximum: Danbooru.config.post_descr_max_size }, if: :description_changed?
   validate :added_tags_are_valid, if: :should_process_tags?
@@ -45,6 +45,12 @@ class Post < ApplicationRecord
 
   belongs_to :updater, :class_name => "User", optional: true # this is handled in versions
   belongs_to :base_file_data, class_name: "BaseFileData"
+  delegate :md5, to: :base_file_data
+  delegate :file_size, to: :base_file_data
+  delegate :file_ext, to: :base_file_data
+  delegate :image_width, to: :base_file_data
+  delegate :image_height, to: :base_file_data
+
   belongs_to :approver, class_name: "User", optional: true
   belongs_to :uploader, :class_name => "User"
   user_status_counter :post_count, foreign_key: :uploader_id
@@ -66,9 +72,9 @@ class Post < ApplicationRecord
 
   has_many :versions, -> {order("post_versions.id ASC")}, :class_name => "PostVersion", :dependent => :destroy
 
-  IMAGE_TYPES = %i[original large preview crop]
+  IMAGE_TYPES = %i[original large preview crop]  # e999_todo (base type) + migrate flags?
 
-  module PostFileMethods
+  module PostFileMethods # e999_todo (base type)
     extend ActiveSupport::Concern
 
     module ClassMethods
@@ -344,7 +350,7 @@ class Post < ApplicationRecord
     end
   end
 
-  module ImageMethods
+  module ImageMethods # e999_todo (base type)
     def twitter_card_supported?
       image_width.to_i >= 280 && image_height.to_i >= 150
     end
@@ -779,7 +785,7 @@ class Post < ApplicationRecord
       return tags - @negated_tags
     end
 
-    def add_automatic_tags(tags)
+    def add_automatic_tags(tags) # e999_todo (base type)
       return tags if !Danbooru.config.enable_dimension_autotagging?
 
       tags -= %w[thumbnail low_res hi_res absurd_res superabsurd_res huge_filesize flash webm mp4 wide_image long_image]
@@ -800,7 +806,7 @@ class Post < ApplicationRecord
         end
       end
 
-      if file_size >= 30.megabytes
+      if file_size >= 30.megabytes # e999_todo (base type)
         tags << "huge_filesize"
       end
 
@@ -1388,11 +1394,11 @@ class Post < ApplicationRecord
       post_data = {
           id: id,
           description: description,
-          md5: md5,
+          md5: md5,  # e999_todo (base type)
           tags: tag_string,
-          height: image_height,
-          width: image_width,
-          file_size: file_size,
+          height: image_height, # e999_todo (base type)
+          width: image_width, # e999_todo (base type)
+          file_size: file_size, # e999_todo (base type)
           sources: source,
           approver_id: approver_id,
           locked_tags: locked_tags,
@@ -1405,7 +1411,7 @@ class Post < ApplicationRecord
           fav_count: fav_count,
           comment_count: comment_count
       }
-      DestroyedPost.create!(post_id: id, post_data: post_data, md5: md5,
+      DestroyedPost.create!(post_id: id, post_data: post_data, md5: md5,  # e999_todo (base type)
                             uploader_ip_addr: uploader_ip_addr, uploader_id: uploader_id,
                             destroyer_id: CurrentUser.id, destroyer_ip_addr: CurrentUser.ip_addr,
                             upload_date: created_at, reason: reason || "")
@@ -1610,7 +1616,7 @@ class Post < ApplicationRecord
     def hidden_attributes
       list = super + [:pool_string, :fav_string]
       if !visible?
-        list += [:md5, :file_ext]
+        list += [:md5, :file_ext] # e999_todo (base type)
       end
       super + list
     end
@@ -1618,7 +1624,7 @@ class Post < ApplicationRecord
     def method_attributes
       list = super + %i[has_sample has_visible_children children_ids pool_ids is_favorited?]
       if visible?
-        list += %i[file_url sample_url preview_file_url]
+        list += %i[file_url sample_url preview_file_url] # e999_todo (base type)
       end
       list
     end
@@ -1629,11 +1635,11 @@ class Post < ApplicationRecord
         flags: status_flags,
         tags: tag_string,
         rating: rating,
-        file_ext: file_ext,
+        file_ext: file_ext, # e999_todo (base type)
 
-        width: image_width,
-        height: image_height,
-        size: file_size,
+        width: image_width, # e999_todo (base type)
+        height: image_height, # e999_todo (base type)
+        size: file_size, # e999_todo (base type)
 
         created_at: created_at,
         uploader: uploader_name,
@@ -1647,10 +1653,10 @@ class Post < ApplicationRecord
       }
 
       if visible?
-        attributes[:md5] = md5
-        attributes[:preview_url] = preview_file_url
+        attributes[:md5] = md5  # e999_todo (base type)
+        attributes[:preview_url] = preview_file_url # e999_todo (base type)
         attributes[:sample_url] = sample_url
-        attributes[:file_url] = file_url
+        attributes[:file_url] = file_url # e999_todo (base type)
         attributes[:preview_width] = preview_dimensions[0]
         attributes[:preview_height] = preview_dimensions[1]
       end
@@ -1674,16 +1680,16 @@ class Post < ApplicationRecord
   module SearchMethods
     # returns one single post
     def random
-      key = Digest::MD5.hexdigest(Time.now.to_f.to_s)
+      key = Digest::MD5.hexdigest(Time.now.to_f.to_s) # e999_todo (base type)
       random_up(key) || random_down(key)
     end
 
     def random_up(key)
-      where("md5 < ?", key).reorder("md5 desc").first
+      where("md5 < ?", key).reorder("md5 desc").first # e999_todo (base type)
     end
 
     def random_down(key)
-      where("md5 >= ?", key).reorder("md5 asc").first
+      where("md5 >= ?", key).reorder("md5 asc").first # e999_todo (base type)
     end
 
     def sample(query, sample_size)

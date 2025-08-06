@@ -11,7 +11,7 @@ class PostReplacement < ApplicationRecord
 
   validate :user_is_not_limited, on: :create
   validate :post_is_valid, on: :create
-  validate :set_file_name, on: :create
+  validate :set_file_name, on: :create # e999_todo (base type)
   validate :fetch_source_file, on: :create
   validate :update_file_attributes, on: :create
   validate :reason, on: :create do
@@ -145,7 +145,7 @@ class PostReplacement < ApplicationRecord
       throw :abort
     end
 
-    def update_file_attributes
+    def update_file_attributes # e999_todo (base type)
       self.file_ext = file_header_to_file_ext(replacement_file.path)
       self.file_size = replacement_file.size
       self.md5 = Digest::MD5.file(replacement_file.path).hexdigest
@@ -155,7 +155,7 @@ class PostReplacement < ApplicationRecord
       # self.duration = video_duration(replacement_file.path)
     end
 
-    def set_file_name
+    def set_file_name # e999_todo (base type)
       if replacement_file.present?
         self.file_name = replacement_file.try(:original_filename) || File.basename(replacement_file.path)
       else
@@ -279,7 +279,7 @@ class PostReplacement < ApplicationRecord
         file_ext: post.file_ext,
         file_size: post.file_size,
         md5: post.md5,
-        file_name: "#{post.md5}.#{post.file_ext}",
+        file_name: "#{post.md5}.#{post.file_ext}", # e999_todo (base type)
         source: post.source,
         reason: "Backup of original file",
         is_backup: true,
@@ -301,7 +301,7 @@ class PostReplacement < ApplicationRecord
     end
   end
 
-  module PromotionMethods
+  module PromotionMethods # e999_todo (base type)
     def new_upload_params
       {
         uploader_id: creator_id,
@@ -352,7 +352,7 @@ class PostReplacement < ApplicationRecord
           q = q.where_ilike(:source, url_query)
         end
 
-        if params[:file_name].present?
+        if params[:file_name].present? # e999_todo (base type)
           q = q.attribute_matches(:file_name, params[:file_name])
         end
 
