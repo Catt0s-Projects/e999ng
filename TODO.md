@@ -123,3 +123,8 @@ Add support for different storage buckets
   - ie, will be stored as `integer` (key), `url`
 - Anything that stores files should reference one of these integers
 - The storage manager uses the LUT to make the URL, instead of a static base
+
+Improve file wrapper
+- represents a file
+- holds metadata about the file
+- what storage bucket the file is in
