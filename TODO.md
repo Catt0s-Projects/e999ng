@@ -124,7 +124,9 @@ Add support for different storage buckets
 - Anything that stores files should reference one of these integers
 - The storage manager uses the LUT to make the URL, instead of a static base
 
-Improve file wrapper
+Improve file wrapper (`app/models/base_file_data.rb`)
 - represents a file
 - holds metadata about the file
 - what storage bucket the file is in
+- Should update bitfield so that it can support JXL features, like number of channels?
+- filename?
