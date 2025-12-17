@@ -1,9 +1,9 @@
 name: rubocop-todo
 
-on:
-  schedule:
-    - cron: "0 6 * * WED"
-  workflow_dispatch:
+# on:
+#   schedule:
+#     - cron: "0 6 * * WED"
+#   workflow_dispatch:
 
 permissions:
   contents: write
